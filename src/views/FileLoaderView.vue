@@ -38,8 +38,10 @@ export default {
 <template>
   <div>
     <input v-model="title" placeholder="Enter Title" />
-    <button @click="saveToFile">Save to File</button>
+    <button @click="saveToFile">Save to File</button><br />
+    <button @click="getCurrentPath">Look Path</button>
     <p v-if="saveStatus">{{ saveStatus }}</p>
+    <p v-if="appPath">{{ appPath }}</p>
   </div>
 </template>
 
@@ -62,6 +64,18 @@ const saveToFile = () => {
     } else {
       saveStatus.value = `Error saving JSON: ${response.error}`;
     }
+  });
+};
+
+const appPath = ref("");
+const getCurrentPath = () => {
+  // let appPath;
+  // Wysyła zapytanie do procesu głównego o aktualną ścieżkę
+  ipcRenderer.send("get-app-path");
+
+  // Odbiera odpowiedź z procesu głównego i aktualizuje dane Vue
+  ipcRenderer.on("app-path", (event, appPath2) => {
+    appPath.value = appPath2;
   });
 };
 </script>

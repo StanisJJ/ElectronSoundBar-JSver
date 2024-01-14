@@ -143,6 +143,10 @@ ipcMain.on("save-json-file", (event, jsonString) => {
     });
 });
 
+ipcMain.on("get-app-path", (event) => {
+  event.reply("app-path", app.getAppPath());
+});
+
 // ipcMain.on("save-to-file", (event, content) => {
 //   if (!win) {
 //     return;

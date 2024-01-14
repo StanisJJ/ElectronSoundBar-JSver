@@ -1,7 +1,11 @@
 <template>
   {{ currentTrack }}
   <div id="app">
-    <audio ref="audio" :src="currentTrack" @timeupdate="updateTime"></audio>
+    <audio
+      ref="audio"
+      :src="require('C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3')"
+      @timeupdate="updateTime"
+    ></audio>
     <p>{{ formatTime(currentTime) }} / {{ formatTime(duration) }}</p>
     <button @click="prevTrack">Previous</button>
     <button @click="playPause">{{ isPlaying ? "Pause" : "Play" }}</button>
@@ -13,7 +17,7 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 const tracks = [
-  "sounds/guiro-sweep-156002.mp3",
+  "C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3",
   // Add more tracks if needed
 ];
 
