@@ -11,7 +11,7 @@ const {
 } = require("electron");
 const { createProtocol } = require("vue-cli-plugin-electron-builder/lib");
 const installExtension = require("electron-devtools-installer").default;
-// const path = require("path");
+const path = require("path");
 const fs = require("fs");
 
 const isDevelopment = process.env.NODE_ENV !== "production";
@@ -29,6 +29,7 @@ async function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
+      webSecurity: false,
     },
   });
 
@@ -86,6 +87,13 @@ app.on("ready", async () => {
   createWindow();
 });
 
+app.whenReady().then(() => {
+  protocol.registerFileProtocol("file", (request, callback) => {
+    const pathname = decodeURI(request.url.replace("file:///", ""));
+    callback(pathname);
+  });
+});
+
 if (isDevelopment) {
   if (process.platform === "win32") {
     process.on("message", (data) => {
@@ -99,6 +107,21 @@ if (isDevelopment) {
     });
   }
 }
+
+ipcMain.on("open-file-dialog", (event) => {
+  const options = {
+    title: "Choose an audio file",
+    filters: [{ name: "Audio Files", extensions: ["mp3"] }],
+    properties: ["openFile"],
+  };
+
+  dialog.showOpenDialog(options).then((filePaths) => {
+    if (!filePaths.canceled && filePaths.filePaths.length > 0) {
+      console.log(filePaths.filePaths);
+      event.sender.send("selected-file", filePaths.filePaths[0]);
+    }
+  });
+});
 
 ipcMain.on("save-json-file", (event, jsonString) => {
   if (!win) {
@@ -146,46 +169,31 @@ ipcMain.on("save-json-file", (event, jsonString) => {
 ipcMain.on("get-app-path", (event) => {
   event.reply("app-path", app.getAppPath());
 });
+//-----------------------------------------------------------------
+const folderPath = "C:/Users/daki_ImBack/Desktop/dane";
 
-// ipcMain.on("save-to-file", (event, content) => {
-//   if (!win) {
-//     return;
-//   }
+// Funkcja do zbierania plików z folderu
+function getFilesInFolder(folderPath) {
+  return new Promise((resolve, reject) => {
+    fs.readdir(folderPath, (err, files) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(files.map((file) => path.join(folderPath, file)));
+      }
+    });
+  });
+}
 
-//   const options = {
-//     title: "Zapisz do pliku",
-//     defaultPath: app.getPath("documents"),
-//     filters: [{ name: "Pliki tekstowe", extensions: ["txt"] }],
-//   };
-
-//   dialog
-//     .showSaveDialog(win, options)
-//     .then((result) => {
-//       if (!result.canceled && result.filePath) {
-//         fs.writeFile(result.filePath, content, (err) => {
-//           if (err) {
-//             event.reply("save-to-file-response", {
-//               success: false,
-//               error: err.message,
-//             });
-//           } else {
-//             event.reply("save-to-file-response", {
-//               success: true,
-//               filePath: result.filePath,
-//             });
-//           }
-//         });
-//       } else {
-//         event.reply("save-to-file-response", {
-//           success: false,
-//           error: "Operacja zapisu została anulowana.",
-//         });
-//       }
-//     })
-//     .catch((err) => {
-//       event.reply("save-to-file-response", {
-//         success: false,
-//         error: err.message,
-//       });
-//     });
-// });
+ipcMain.on("get-file", () => {
+  getFilesInFolder(folderPath)
+    .then((files) => {
+      // Przekazanie danych do aplikacji Vue
+      console.log(files);
+      win.webContents.send("files", files);
+    })
+    .catch((err) => {
+      console.error("Błąd podczas zbierania plików:", err);
+    });
+});
+// Uruchomienie funkcji i przekazanie wyników do aplikacji Vue

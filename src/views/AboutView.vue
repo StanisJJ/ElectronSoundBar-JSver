@@ -1,98 +1,50 @@
 <template>
-  {{ currentTrack }}
-  <div id="app">
-    <audio
-      ref="audio"
-      :src="require('C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3')"
-      @timeupdate="updateTime"
-    ></audio>
-    <p>{{ formatTime(currentTime) }} / {{ formatTime(duration) }}</p>
-    <button @click="prevTrack">Previous</button>
-    <button @click="playPause">{{ isPlaying ? "Pause" : "Play" }}</button>
-    <button @click="stop">Stop</button>
-    <button @click="nextTrack">Next</button>
+  <div>
+    <button @click="playSound">Play</button><br />
+    <button @click="pauseSound">Pause</button><br />
+    <button @click="stopSound">Stop</button><br />
+    <button @click="handleFileChange">fileLoad</button>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
-const tracks = [
-  "C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3",
-  // Add more tracks if needed
-];
+// import { ref } from "vue";
+const { ipcRenderer } = window.require("electron");
+import { Howl } from "howler";
 
-let currentTrackIndex = ref(0);
-let isPlaying = ref(false);
-let currentTime = ref(0);
-let duration = ref(0);
+const sound = new Howl({
+  src: ["C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3"],
+  format: ["mp3"],
+  onloaderror: (soundId, error) => {
+    console.error("Błąd ładowania dźwięku:", error);
+  },
+  onplayerror: (soundId, error) => {
+    console.error("Błąd odtwarzania dźwięku:", error);
+  },
+  // inne opcje konfiguracyjne
+});
 
-const currentTrack = computed(() => tracks[currentTrackIndex.value]);
-
-const playPause = () => {
-  isPlaying.value ? pause() : play();
+const playSound = () => {
+  sound.play();
 };
 
-const play = () => {
-  audio.value.play();
-  isPlaying.value = true;
+const pauseSound = () => {
+  sound.pause();
 };
 
-const pause = () => {
-  audio.value.pause();
-  isPlaying.value = false;
+const stopSound = () => {
+  sound.stop();
 };
 
-const stop = () => {
-  pause();
-  currentTime.value = 0;
-  audio.value.currentTime = 0;
+const handleFileChange = () => {
+  ipcRenderer.send("open-file-dialog");
 };
 
-const prevTrack = () => {
-  stop();
-  currentTrackIndex.value =
-    (currentTrackIndex.value - 1 + tracks.length) % tracks.length;
-  play();
-};
-
-const nextTrack = () => {
-  stop();
-  currentTrackIndex.value = (currentTrackIndex.value + 1) % tracks.length;
-  play();
-};
-
-// const seek = () => {
-//   audio.value.currentTime = currentTime.value;
-// };
-
-const formatTime = (time) => {
-  const minutes = Math.floor(time / 60);
-  const seconds = Math.floor(time % 60);
-  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
-    2,
-    "0"
-  )}`;
-};
-
-const updateTime = () => {
-  currentTime.value = audio.value.currentTime;
-  duration.value = audio.value.duration;
-};
-
-const audio = ref(null);
-
-onMounted(() => {
-  audio.value.addEventListener("timeupdate", updateTime);
+ipcRenderer.on("selected-file", (event, filePath) => {
+  if (sound) {
+    sound.unload();
+    sound.src = [filePath];
+    console.log(filePath);
+  }
 });
 </script>
-
-<style>
-#app {
-  text-align: center;
-  margin-top: 60px;
-}
-
-button {
-  margin: 5px;
-}
-</style>

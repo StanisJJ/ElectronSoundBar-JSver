@@ -1,4 +1,5 @@
 const { defineConfig } = require("@vue/cli-service");
+const path = require("path");
 module.exports = defineConfig({
   transpileDependencies: true,
 
@@ -19,4 +20,7 @@ module.exports = defineConfig({
     // Dodaj obsługę loadera dla plików SVG
     config.module.rule("svg").use("file-loader").loader("file-loader").end();
   },
+
+  outputDir: path.resolve(__dirname, "./basic_app/dist"),
+  publicPath: "./",
 });

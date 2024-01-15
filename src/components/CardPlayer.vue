@@ -13,7 +13,7 @@
         coverImage: require('../assets/logo.png'),
       }"
     /> -->
-
+    <!-- {{ localCard.soundSrc }} -->
     <v-card class="single-card-box">
       <v-btn
         size="small"
@@ -23,10 +23,17 @@
         class="to-right-corner-edit"
         @click="editMode = !editMode"
       ></v-btn>
-      <div class="active-border" :class="{ 'active-border-glowing': editMode }">
+      <div
+        class="active-border"
+        :class="{ 'active-border-glowing': isPlaying }"
+      >
         <v-card class="single-card" :class="{ 'rounded-border': !editMode }">
           <transition name="slide-fade">
-            <div v-show="editMode" class="edit-mode">
+            <div
+              @click="isPlaying ? pause() : play()"
+              v-show="editMode"
+              class="edit-mode"
+            >
               <v-img
                 :src="localCard.src"
                 class="align-end"
@@ -44,6 +51,44 @@
 
           <!-- <transition name="slide-fade" mode="out-in"> -->
           <div v-show="!editMode">
+            <div>
+              <audio
+                ref="audioPlayer"
+                :src="audioSource"
+                @timeupdate="updateTime"
+                @ended="audioEnded"
+              ></audio>
+              <div>
+                <button @click="playPause">
+                  {{ isPlaying ? "Pause" : "Play" }}
+                </button>
+                <button @click="stop">Stop</button>
+              </div>
+              <div>
+                <label for="volume">Volume:</label>
+                <input
+                  id="volume"
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  v-model="volume"
+                  @input="updateVolume"
+                />
+              </div>
+              <div>
+                <label for="speed">Speed:</label>
+                <input
+                  id="speed"
+                  type="range"
+                  min="0.5"
+                  max="2"
+                  step="0.1"
+                  v-model="playbackSpeed"
+                  @input="updateSpeed"
+                />
+              </div>
+            </div>
             <v-text-field clearable v-model="localCard.title"></v-text-field>
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -57,10 +102,55 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from "vue";
+import { ref, defineProps, onMounted } from "vue";
 const props = defineProps(["modelValue"]);
 const localCard = ref(props.modelValue);
 const editMode = ref(true);
+//---------------------audio
+const audioSource = ref(localCard.value.soundSrc);
+const audioPlayer = ref(null);
+const isPlaying = ref(false);
+const volume = ref(1);
+const playbackSpeed = ref(1);
+
+const playPause = () => {
+  isPlaying.value ? pause() : play();
+};
+
+const play = () => {
+  audioPlayer.value.play();
+  isPlaying.value = true;
+};
+
+const pause = () => {
+  audioPlayer.value.pause();
+  isPlaying.value = false;
+};
+
+const stop = () => {
+  pause();
+  audioPlayer.value.currentTime = 0;
+};
+
+const updateVolume = () => {
+  audioPlayer.value.volume = volume.value;
+};
+
+const updateSpeed = () => {
+  audioPlayer.value.playbackRate = playbackSpeed.value;
+};
+
+const updateTime = () => {
+  // Tutaj możesz dodatkowo obsłużyć aktualizację czasu odtwarzania
+};
+
+const audioEnded = () => {
+  isPlaying.value = false;
+};
+
+onMounted(() => {
+  audioPlayer.value = new Audio();
+});
 </script>
 
 <style lang="scss">
@@ -114,7 +204,7 @@ const editMode = ref(true);
 }
 // animation border glowing
 
-.active-border-glowing:hover {
+.active-border-glowing {
   border-radius: 100%;
   background: linear-gradient(
     45deg,

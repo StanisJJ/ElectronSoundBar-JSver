@@ -31,6 +31,8 @@
           <router-link to="/about">About</router-link>
           <hr />
           <router-link to="/fileLoader">loader</router-link>
+          <hr />
+          <router-link to="/Test">loader</router-link>
         </v-list>
       </v-navigation-drawer>
 
@@ -112,147 +114,22 @@ const cards = ref([
       {
         title: "Pre-fab homes",
         src: "https://cdn.vuetifyjs.com/images/cards/house.jpg",
-        flex: 12,
+        soundSrc: "C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3",
       },
       {
         title: "Favorite road trips",
         src: "https://cdn.vuetifyjs.com/images/cards/road.jpg",
         flex: 6,
+        soundSrc: "C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3",
       },
       {
         title: "Best airlines",
         src: "https://cdn.vuetifyjs.com/images/cards/plane.jpg",
         flex: 6,
+        soundSrc: "C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3",
       },
     ],
   },
-
-  {
-    title: "Drugi obiekt",
-    sounds: [
-      {
-        title: "City lights",
-        src: "https://cdn.vuetifyjs.com/images/cards/city.jpg",
-        flex: 12,
-      },
-      {
-        title: "Mountain views",
-        src: "https://cdn.vuetifyjs.com/images/cards/mountain.jpg",
-        flex: 6,
-      },
-      {
-        title: "Ocean vibes",
-        src: "https://cdn.vuetifyjs.com/images/cards/ocean.jpg",
-        flex: 6,
-      },
-    ],
-  },
-
-  {
-    title: "Trzeci obiekt",
-    sounds: [
-      {
-        title: "Space exploration",
-        src: "https://cdn.vuetifyjs.com/images/cards/space.jpg",
-        flex: 12,
-      },
-      {
-        title: "Underwater wonders",
-        src: "https://cdn.vuetifyjs.com/images/cards/underwater.jpg",
-        flex: 6,
-      },
-      {
-        title: "Wildlife safari",
-        src: "https://cdn.vuetifyjs.com/images/cards/safari.jpg",
-        flex: 6,
-      },
-    ],
-  },
-
-  {
-    title: "Czwarty obiekt",
-    sounds: [
-      {
-        title: "Sunset serenity",
-        src: "https://cdn.vuetifyjs.com/images/cards/sunset.jpg",
-        flex: 12,
-      },
-      {
-        title: "Autumn colors",
-        src: "https://cdn.vuetifyjs.com/images/cards/autumn.jpg",
-        flex: 6,
-      },
-      {
-        title: "Winter wonderland",
-        src: "https://cdn.vuetifyjs.com/images/cards/winter.jpg",
-        flex: 6,
-      },
-    ],
-  },
-
-  {
-    title: "Piąty obiekt",
-    sounds: [
-      {
-        title: "Mountain retreat",
-        src: "https://cdn.vuetifyjs.com/images/cards/mountain2.jpg",
-        flex: 12,
-      },
-      {
-        title: "Beach paradise",
-        src: "https://cdn.vuetifyjs.com/images/cards/beach.jpg",
-        flex: 6,
-      },
-      {
-        title: "Forest adventure",
-        src: "https://cdn.vuetifyjs.com/images/cards/forest.jpg",
-        flex: 6,
-      },
-    ],
-  },
-
-  {
-    title: "Szósty obiekt",
-    sounds: [
-      {
-        title: "Desert oasis",
-        src: "https://cdn.vuetifyjs.com/images/cards/desert.jpg",
-        flex: 12,
-      },
-      {
-        title: "Country landscapes",
-        src: "https://cdn.vuetifyjs.com/images/cards/country.jpg",
-        flex: 6,
-      },
-      {
-        title: "Tropical vibes",
-        src: "https://cdn.vuetifyjs.com/images/cards/tropical.jpg",
-        flex: 6,
-      },
-    ],
-  },
-
-  {
-    title: "Siódmy obiekt",
-    sounds: [
-      {
-        title: "Jungle exploration",
-        src: "https://cdn.vuetifyjs.com/images/cards/jungle.jpg",
-        flex: 12,
-      },
-      {
-        title: "Urban cityscape",
-        src: "https://cdn.vuetifyjs.com/images/cards/urban.jpg",
-        flex: 6,
-      },
-      {
-        title: "Snowy landscapes",
-        src: "https://cdn.vuetifyjs.com/images/cards/snow.jpg",
-        flex: 6,
-      },
-    ],
-  },
-
   {
     title: "Ósmy obiekt",
     sounds: [
@@ -260,16 +137,19 @@ const cards = ref([
         title: "City skyline",
         src: "https://cdn.vuetifyjs.com/images/cards/city2.jpg",
         flex: 12,
+        soundSrc: "C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3",
       },
       {
         title: "Countryside charm",
         src: "https://cdn.vuetifyjs.com/images/cards/countryside.jpg",
         flex: 6,
+        soundSrc: "C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3",
       },
       {
         title: "Seaside retreat",
         src: "https://cdn.vuetifyjs.com/images/cards/seaside.jpg",
         flex: 6,
+        soundSrc: "C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3",
       },
     ],
   },
