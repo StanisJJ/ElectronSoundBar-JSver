@@ -11,8 +11,9 @@ const {
 } = require("electron");
 const { createProtocol } = require("vue-cli-plugin-electron-builder/lib");
 const installExtension = require("electron-devtools-installer").default;
-const path = require("path");
+// const path = require("path");
 const fs = require("fs");
+const sound = require("./SoundsOperation");
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 let win = null;
@@ -169,24 +170,11 @@ ipcMain.on("save-json-file", (event, jsonString) => {
 ipcMain.on("get-app-path", (event) => {
   event.reply("app-path", app.getAppPath());
 });
-//-----------------------------------------------------------------
+
 const folderPath = "C:/Users/daki_ImBack/Desktop/dane";
-
-// Funkcja do zbierania plików z folderu
-function getFilesInFolder(folderPath) {
-  return new Promise((resolve, reject) => {
-    fs.readdir(folderPath, (err, files) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(files.map((file) => path.join(folderPath, file)));
-      }
-    });
-  });
-}
-
 ipcMain.on("get-file", () => {
-  getFilesInFolder(folderPath)
+  sound
+    .getFilesInFolder(folderPath)
     .then((files) => {
       // Przekazanie danych do aplikacji Vue
       console.log(files);
@@ -196,4 +184,3 @@ ipcMain.on("get-file", () => {
       console.error("Błąd podczas zbierania plików:", err);
     });
 });
-// Uruchomienie funkcji i przekazanie wyników do aplikacji Vue
