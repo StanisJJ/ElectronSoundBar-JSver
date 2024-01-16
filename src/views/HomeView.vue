@@ -1,5 +1,6 @@
 <template>
   <v-card>
+    <!-- {{ logs }} -->
     <v-layout>
       <v-navigation-drawer expand-on-hover rail permanent>
         <v-list>
@@ -32,7 +33,7 @@
           <hr />
           <router-link to="/fileLoader">loader</router-link>
           <hr />
-          <router-link to="/Test">loader</router-link>
+          <router-link to="/Test">Test</router-link>
         </v-list>
       </v-navigation-drawer>
 
@@ -106,6 +107,12 @@
 <script setup>
 import { ref } from "vue";
 import CardPlayer from "@/components/CardPlayer.vue";
+// const { ipcRenderer } = window.require("electron");
+
+// const logs = ref("empty");
+// ipcRenderer.on("alert-logs", (event, configFile) => {
+//   logs.value = configFile;
+// });
 
 const cards = ref([
   {
@@ -125,6 +132,98 @@ const cards = ref([
       {
         title: "Best airlines",
         src: "https://cdn.vuetifyjs.com/images/cards/plane.jpg",
+        flex: 6,
+        soundSrc: "C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3",
+      },
+    ],
+  },
+  {
+    title: "Ósmy obiekt",
+    sounds: [
+      {
+        title: "City skyline",
+        src: "https://cdn.vuetifyjs.com/images/cards/city2.jpg",
+        flex: 12,
+        soundSrc: "C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3",
+      },
+      {
+        title: "Countryside charm",
+        src: "https://cdn.vuetifyjs.com/images/cards/countryside.jpg",
+        flex: 6,
+        soundSrc: "C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3",
+      },
+      {
+        title: "Seaside retreat",
+        src: "https://cdn.vuetifyjs.com/images/cards/seaside.jpg",
+        flex: 6,
+        soundSrc: "C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3",
+      },
+    ],
+  },
+  {
+    title: "Ósmy obiekt",
+    sounds: [
+      {
+        title: "City skyline",
+        src: "https://cdn.vuetifyjs.com/images/cards/city2.jpg",
+        flex: 12,
+        soundSrc: "C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3",
+      },
+      {
+        title: "Countryside charm",
+        src: "https://cdn.vuetifyjs.com/images/cards/countryside.jpg",
+        flex: 6,
+        soundSrc: "C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3",
+      },
+      {
+        title: "Seaside retreat",
+        src: "https://cdn.vuetifyjs.com/images/cards/seaside.jpg",
+        flex: 6,
+        soundSrc: "C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3",
+      },
+    ],
+  },
+  {
+    title: "Ósmy obiekt",
+    sounds: [
+      {
+        title: "City skyline",
+        src: "https://cdn.vuetifyjs.com/images/cards/city2.jpg",
+        flex: 12,
+        soundSrc: "C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3",
+      },
+      {
+        title: "Countryside charm",
+        src: "https://cdn.vuetifyjs.com/images/cards/countryside.jpg",
+        flex: 6,
+        soundSrc: "C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3",
+      },
+      {
+        title: "Seaside retreat",
+        src: "https://cdn.vuetifyjs.com/images/cards/seaside.jpg",
+        flex: 6,
+        soundSrc: "C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3",
+      },
+    ],
+  },
+  {
+    title: "Ósmy obiekt",
+    sounds: [
+      {
+        title: "City skyline",
+        src: "https://cdn.vuetifyjs.com/images/cards/city2.jpg",
+        flex: 12,
+        soundSrc: "C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3",
+      },
+      {
+        title: "Countryside charm",
+        src: "https://cdn.vuetifyjs.com/images/cards/countryside.jpg",
+        flex: 6,
+        soundSrc: "C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3",
+      },
+      {
+        title: "Seaside retreat",
+        src: "https://cdn.vuetifyjs.com/images/cards/seaside.jpg",
         flex: 6,
         soundSrc: "C:/Users/daki_ImBack/Documents/guiro-sweep-156002.mp3",
       },

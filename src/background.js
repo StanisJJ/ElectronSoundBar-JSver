@@ -11,13 +11,15 @@ const {
 } = require("electron");
 const { createProtocol } = require("vue-cli-plugin-electron-builder/lib");
 const installExtension = require("electron-devtools-installer").default;
-// const path = require("path");
+const path = require("path");
 const fs = require("fs");
-const sound = require("./SoundsOperation");
+const fileOperations = require("./fileOperations");
+const { dir } = require("console");
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 let win = null;
 let rightClickPosition = null;
+let configFile = {};
 
 protocol.registerSchemesAsPrivileged([
   { scheme: "app", privileges: { secure: true, standard: true } },
@@ -89,10 +91,16 @@ app.on("ready", async () => {
 });
 
 app.whenReady().then(() => {
-  protocol.registerFileProtocol("file", (request, callback) => {
-    const pathname = decodeURI(request.url.replace("file:///", ""));
-    callback(pathname);
-  });
+  console.log("userData:", app.getPath("userData"));
+  (async () => {
+    try {
+      configFile = await fileOperations.setConfigFile();
+      console.log("ConfgFile:", configFile);
+      fileOperations.checkDir();
+    } catch (error) {
+      console.error("Błąd:", error);
+    }
+  })();
 });
 
 if (isDevelopment) {
@@ -168,12 +176,27 @@ ipcMain.on("save-json-file", (event, jsonString) => {
 });
 
 ipcMain.on("get-app-path", (event) => {
-  event.reply("app-path", app.getAppPath());
+  console.log("get file", configFile);
+  event.reply("app-path", path.dirname(__dirname), configFile);
+});
+
+ipcMain.on("get-file-list", async (event) => {
+  try {
+    const fileList = await fileOperations.listFilesAndFolders();
+    console.log("File-list", fileList);
+    event.reply("get-list", fileList);
+  } catch (error) {
+    console.error(
+      "Błąd podczas pobierania listy plików i folderów:",
+      error.message
+    );
+    // Dodaj obsługę błędu, na przykład event.reply z informacją o błędzie
+  }
 });
 
 const folderPath = "C:/Users/daki_ImBack/Desktop/dane";
 ipcMain.on("get-file", () => {
-  sound
+  fileOperations
     .getFilesInFolder(folderPath)
     .then((files) => {
       // Przekazanie danych do aplikacji Vue

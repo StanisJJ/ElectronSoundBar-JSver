@@ -1,49 +1,30 @@
 <template>
-  <div id="app">
-    <button @click="GetFiles">Get</button>
-    <ul>
-      <li v-for="(file, index) in files" :key="index">
-        {{ file }}
-        <v-img :width="300" aspect-ratio="16/9" cover :src="file"></v-img>
-      </li>
-    </ul>
-  </div>
+  <v-data-table :items="items"></v-data-table>
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref, onMounted } from "vue";
 const { ipcRenderer } = window.require("electron");
 
-const files = ref([]);
+// Użyj ref do stworzenia reaktywnej zmiennej items
+const items = ref([
+  {
+    name: "African Elephant",
+    type: "Loxodonta africana",
+    path: "Herbivore",
+  },
+  // ... more items
+]);
 
 onMounted(() => {
-  ipcRenderer.on("files", (event, receivedFiles) => {
-    files.value = receivedFiles;
-  });
+  // Ta funkcja zostanie uruchomiona, gdy komponent zostanie zamontowany
+  ipcRenderer.send("get-file-list");
+  console.log("Komponent został zamontowany");
 });
 
-const GetFiles = () => {
-  ipcRenderer.send("get-file");
-};
+ipcRenderer.on("get-list", (event, receivedItems) => {
+  // Zaktualizuj wartość zmiennej items przy użyciu ref.value
+  items.value = receivedItems;
+  console.log(receivedItems);
+});
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  margin: 5px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  background-color: #f9f9f9;
-}
-</style>
